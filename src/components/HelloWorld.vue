@@ -11,7 +11,10 @@
 		<h1>{{ msg }}</h1>
 		<h3>{{ name }}</h3>
 		<div class="text-xs-center">
-			<v-btn @click="apiPublic" outline color="indigo">NEWS</v-btn>
+			<!-- golangニュースページに飛ぶ -->
+			<v-btn @click="hrefURL" outline color="indigo">NEWS</v-btn>
+			<!-- golang http から値を取ってくるボタンPublic -->
+			<v-btn @click="apiPublic" outline color="indigo">golangから値Public</v-btn>
 			<v-btn @click="apiPrivate" outline color="indigo">private商品一覧</v-btn>
 		</div>
 		<div v-show="state=='notLoggedIn'">
@@ -114,7 +117,10 @@ export default {
         localStorage.removeItem('jwt')
         this.$router.push('/signin')
       })
-    },
+	},
+	hrefURL: function () {
+		window.location.href='http://localhost:8070/news/'
+	},
     apiPublic: async function () {
       let res = await axios.get('http://localhost:8000/public')
       this.msg = res.data

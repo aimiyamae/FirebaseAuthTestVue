@@ -11,12 +11,19 @@ Vue.use(Vuetify)
 Vue.config.productionTip = false
 
 const config = {
-  apiKey: 'AIzaSyDK1OEQt9qfgc46JVBaNiZz8YI7t3pvd0Q',
-  authDomain: 'ureteku-mvp.firebaseapp.com',
-  databaseURL: 'https://ureteku-mvp.firebaseio.com',
-  projectId: 'ureteku-mvp',
-  storageBucket: 'ureteku-mvp.appspot.com',
-  messagingSenderId: '761747549302'
+	// apiKey: 'AIzaSyDK1OEQt9qfgc46JVBaNiZz8YI7t3pvd0Q',
+	// authDomain: 'ureteku-mvp.firebaseapp.com',
+	// databaseURL: 'https://ureteku-mvp.firebaseio.com',
+	// projectId: 'ureteku-mvp',
+	// storageBucket: 'ureteku-mvp.appspot.com',
+	// messagingSenderId: '761747549302'
+	apiKey: process.env.YOUR_KEY,
+	authDomain: process.env.YOUR_DOMAIN + '.firebaseapp.com',
+	databaseURL: process.env.YOUR_DOMAIN + '.firebaseio.com',
+	projectId: process.env.YOUR_ID,
+	storageBucket: process.env.YOUR_BUCKET_ID + '.appspot.com',
+	messagingSenderId: process.env.YOUR_SENDER_ID
+
 }
 firebase.initializeApp(config)
 
