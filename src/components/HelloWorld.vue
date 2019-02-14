@@ -21,7 +21,7 @@
 			<button @click="loginWithEmail">ログインtest</button>
 		</div>
 		<div v-show="state=='onlyEmail'">
-			<p>{{`email: ${auth.email}`}}</p>
+			<!-- <p>{{`email: ${auth.email}`}}</p> -->
 			<h3>電話番号を入力</h3>
 			<input v-model='phoneNumber' />
 			<button id='linkPhoneNumberBtn' @click="sendSmsVerification">確認番号を送信</button>
@@ -38,6 +38,43 @@
 			<p>{{`email: ${auth.email}`}}</p>
 			<p>{{`phone number: ${auth.phoneNumber}`}}</p>
 		</div>
+
+				<template>
+    <div class="signin">
+		<v-content>
+			<v-container fluid fill-height>
+			<v-layout align-center justify-center>
+				<v-flex xs12 sm8 md4>
+				<v-card class="elevation-12">
+					<v-toolbar color="#EEEEEE">
+					<v-toolbar-title >マイページ</v-toolbar-title>
+					<v-spacer>
+					</v-spacer>
+					</v-toolbar>
+					<v-card-text>
+					<v-form>
+						<p></p>
+						<p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
+						<p></p>
+						<v-btn flat color="black">取り扱い対象外アイテム</v-btn><br />
+						<v-btn flat color="black">利用規約</v-btn><br />
+						<v-btn flat color="black">プライバシーポリシー</v-btn><br />
+						<v-btn flat color="black">古物営業法に基づく表記</v-btn><br />
+						<v-btn flat color="black">運営会社</v-btn><br />
+						<v-btn @click="inquiryForm" flat color="black">お問い合わせ</v-btn><br />
+					</v-form>
+					</v-card-text>
+					<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
+					</v-card-actions>
+				</v-card>
+				</v-flex>
+			</v-layout>
+			</v-container>
+		</v-content>
+    </div>
+</template>
 		<div id="app">
 			<h1>{{ msgCalendar }}</h1>
 			<v-app id="inspire">
@@ -54,6 +91,8 @@
 					</div>
 			</v-app>
 		</div>
+
+
   	</div>
 </template>
 
@@ -68,7 +107,7 @@ data () {
 		picker: new Date().toISOString().substr(0, 10),
 		msg: 'マイページ',
 		msgCalendar: '日付を選択',
-		name: firebase.auth().currentUser.email,
+		name: firebase.auth().currentUser.uid,
 		auth: {
 			email: 'test@gmail.com',
 			phoneNumber: '',
@@ -119,7 +158,11 @@ computed: {
 			})
 		},
 		hrefURL: function () {
-			window.location.href='http://localhost:8080/news/'
+			window.location.href='http://localhost:8080/news'
+		},
+		inquiryForm: function () {
+			open( "https://docs.google.com/forms/d/1riQvax43mOky4luvP8K5AKPZNvYEJ3umOcHY_teXTWg/edit", "_blank" ) ;
+			// window.location.href='https://docs.google.com/forms/d/1riQvax43mOky4luvP8K5AKPZNvYEJ3umOcHY_teXTWg/edit'
 		},
 		apiPublic: async function () {
 			let res = await axios.get('http://localhost:8000/public')
