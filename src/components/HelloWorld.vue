@@ -54,7 +54,7 @@
 					</div>
 			</v-app>
 		</div>
-  </div>
+  	</div>
 </template>
 
 <script>
@@ -62,115 +62,115 @@
 import axios from 'axios'
 import firebase from 'firebase'
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
+name: 'HelloWorld',
+data () {
+	return {
 		picker: new Date().toISOString().substr(0, 10),
 		msg: 'マイページ',
 		msgCalendar: '日付を選択',
-      	name: firebase.auth().currentUser.email,
-      	auth: {
-        	email: 'ktsyy306@gmail.com',
-        	phoneNumber: '',
-      	},
+		name: firebase.auth().currentUser.email,
+		auth: {
+			email: 'test@gmail.com',
+			phoneNumber: '',
+		},
 		phoneNumber: '',
 		recaptchaVerifier: null,
 		confirmationResult: null,
 		waitingVerify: false,
 		verificationCode: '',
 		user: null
-    }
-  },
-  computed: {
-    state() {
-      if (!this.auth.email) {
-        return 'notLoggedIn'
-      }
-      if (this.auth.email  && !this.waitingVerify && !this.auth.phoneNumber) {
-        return 'onlyEmail'
-      }
-      if (this.auth.email && this.waitingVerify && !this.auth.phoneNumber) {
-        return 'waitingVerify'
-      }
-      return 'emailAndPhoneNumber'
-    },
-  },
-  async mounted() {
-    const _this = this
-    firebase.auth().getRedirectResult().then((result) => {
-      if (result.credential) {
-        const user = result.user
-        _this.user = user
-        if (user.email) {
-          _this.auth.email = user.email
-        }
-      }
-    })
-
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('linkPhoneNumberBtn', {
-      'size': 'invisible',
-    })
-  },
-  methods: {
-    signOut: function () {
-      firebase.auth().signOut().then(() => {
-        localStorage.removeItem('jwt')
-        this.$router.push('/signin')
-      })
-	},
-	hrefURL: function () {
-		window.location.href='http://localhost:8070/news/'
-	},
-    apiPublic: async function () {
-      let res = await axios.get('http://localhost:8000/public')
-      this.msg = res.data
-    },
-    apiPrivate: async function () {
-      let res = await axios.get('http://localhost:8000/private', {
-        headers: {'Authorization': `Bearer ${localStorage.getItem('jwt')}`}
-      })
-      this.msg = res.data
-    },
-        loginWithEmail() {
-      const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(provider)
-    },
-    async sendSmsVerification() {
-      try {
-        const confirmationResult = await firebase.auth().signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier)
-        this.confirmationResult = confirmationResult
-        this.waitingVerify = true
-      } catch(error) {
-        // console.error(error)
-      }
-    },
-    async confirmVerification() {
-      const credential = firebase.auth.PhoneAuthProvider.credential(this.confirmationResult.verificationId, this.verificationCode)
-      const userCred = await this.user.linkAndRetrieveDataWithCredential(credential)
-      this.auth.phoneNumber = userCred.user.phoneNumber
-    },
-    //カレンダー選択不可の式
-	allowedDates: function(val){
-		// 今日～100日後までを選べるようにする
-		let today = new Date()
-		today = new Date(
-			today.getFullYear(),
-			today.getMonth(),
-			today.getDate() + 1
-		)
-		let maxAllowedDay = new Date()
-		maxAllowedDay.setDate(
-			today.getDate() + 100
-		)
-		maxAllowedDay = new Date(
-			maxAllowedDay.getFullYear(),
-			maxAllowedDay.getMonth(),
-			maxAllowedDay.getDate()
-		)
-		return today <= new Date(val) && new Date(val) <= maxAllowedDay
 	}
+},
+computed: {
+    state() {
+		if (!this.auth.email) {
+			return 'notLoggedIn'
+		}
+		if (this.auth.email  && !this.waitingVerify && !this.auth.phoneNumber) {
+			return 'onlyEmail'
+		}
+		if (this.auth.email && this.waitingVerify && !this.auth.phoneNumber) {
+			return 'waitingVerify'
+		}
+			return 'emailAndPhoneNumber'
+		},
+	},
+	async mounted() {
+		const _this = this
+		firebase.auth().getRedirectResult().then((result) => {
+			if (result.credential) {
+				const user = result.user
+				_this.user = user
+				if (user.email) {
+				_this.auth.email = user.email
+				}
+			}
+		})
+
+		this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('linkPhoneNumberBtn', {
+		'size': 'invisible',
+		})
+	},
+	methods: {
+		signOut: function () {
+			firebase.auth().signOut().then(() => {
+				localStorage.removeItem('jwt')
+				this.$router.push('/signin')
+			})
+		},
+		hrefURL: function () {
+			window.location.href='http://localhost:8080/news/'
+		},
+		apiPublic: async function () {
+			let res = await axios.get('http://localhost:8000/public')
+			this.msg = res.data
+		},
+		apiPrivate: async function () {
+			let res = await axios.get('http://localhost:8000/private', {
+				headers: {'Authorization': `Bearer ${localStorage.getItem('jwt')}`}
+			})
+			this.msg = res.data
+		},
+		loginWithEmail() {
+			const provider = new firebase.auth.GoogleAuthProvider()
+			firebase.auth().signInWithRedirect(provider)
+		},
+		async sendSmsVerification() {
+			try {
+				const confirmationResult = await firebase.auth().signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier)
+				this.confirmationResult = confirmationResult
+				this.waitingVerify = true
+			} catch(error) {
+				// console.error(error)
+			}
+		},
+		async confirmVerification() {
+			const credential = firebase.auth.PhoneAuthProvider.credential(this.confirmationResult.verificationId, this.verificationCode)
+			const userCred = await this.user.linkAndRetrieveDataWithCredential(credential)
+			this.auth.phoneNumber = userCred.user.phoneNumber
+		},
+		//カレンダー選択不可の式
+		allowedDates: function(val){
+			// 今日～100日後までを選べるようにする
+			let today = new Date()
+			today = new Date(
+				today.getFullYear(),
+				today.getMonth(),
+				today.getDate() + 1
+			)
+			let maxAllowedDay = new Date()
+			maxAllowedDay.setDate(
+				today.getDate() + 100
+			)
+			maxAllowedDay = new Date(
+				maxAllowedDay.getFullYear(),
+				maxAllowedDay.getMonth(),
+				maxAllowedDay.getDate()
+			)
+			return today <= new Date(val) && new Date(val) <= maxAllowedDay
+		}
     // allowedDates: val => parseInt(val.split('-')[2], 10) % 2 === 0
-  }
+  	}
 }
 
 // import axios from 'axios'
