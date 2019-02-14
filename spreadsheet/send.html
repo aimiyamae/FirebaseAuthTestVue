@@ -1,0 +1,26 @@
+<div>
+    <h1><a href="/">ウレテク</a></h1>
+    <nav>
+        <ul>
+            <li><a href="/view">商品一覧</a></li>
+            <li><a href="/news">お知らせ</a></li>
+            <li><a href="/mypage">マイページ(未)</a></li>
+        </ul>
+    </nav>
+</div>
+<h2>グレードアップリクエスト {{.Title |html|}}</h2>
+    <form action="/save/{{.Title |html|}}" method="POST"><!--postメソッドでlocalhost:8070/saveに値を渡す-->
+        集荷予約の依頼が非常に多いため、ユーザーのご住所や売りたいアイテムを元に、審査をさせていただいております。<br />
+        
+        どんなアイテムがどれくらいあるのか、ブランド名等も含めお教えいただけますと、幸いです。<br />
+        
+        リクエストメッセージ<br />
+    <div>
+        <!--テキストエリアで送信する文字列-->
+        <textarea name="body" rows="20" cols="80">{{printf "%s" .Body|html|}}</textarea><br>
+    </div>
+    <div>
+        <!--送信ボタン配置-->
+        <input type="submit" value="Save">
+    </div>
+</form>

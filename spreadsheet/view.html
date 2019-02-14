@@ -1,0 +1,5 @@
+<h1>{{.Title |html|}}</h1>
+商品一覧表示ページ
+現状ではメモ帳から取得
+<p>[<a href="/send/{{.Title |html|}}">send</a>]</p>
+<div>{{printf "%s" .Body|html|}}</div>
