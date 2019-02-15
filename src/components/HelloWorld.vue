@@ -17,27 +17,10 @@
 			<v-btn @click="apiPublic" outline color="indigo">golangから値Public</v-btn>
 			<v-btn @click="apiPrivate" outline color="indigo">private商品一覧</v-btn>
 		</div>
-		<div v-show="state=='notLoggedIn'">
-			<button @click="loginWithEmail">ログインtest</button>
-		</div>
-		<div v-show="state=='onlyEmail'">
-			<!-- <p>{{`email: ${auth.email}`}}</p> -->
-			<h3>電話番号を入力</h3>
-			<input v-model='phoneNumber' />
-			<button id='linkPhoneNumberBtn' @click="sendSmsVerification">確認番号を送信</button>
-		</div>
+		<!-- <div v-show="state=='notLoggedIn'">
+			<button @click="loginWithEmail">ログインtest</button> -->
+		<!-- </div> -->
 		
-		<div v-show="state=='waitingVerify'">
-			<p>{{`email: ${auth.email}`}}</p>
-			<h3>確認番号を入力</h3>
-			<input v-model='verificationCode' />
-			<button @click="confirmVerification">確認</button>
-		</div>
-
-		<div v-show="state=='emailAndPhoneNumber'">
-			<p>{{`email: ${auth.email}`}}</p>
-			<p>{{`phone number: ${auth.phoneNumber}`}}</p>
-		</div>
 
 				<template>
     <div class="signin">
@@ -46,28 +29,33 @@
 			<v-layout align-center justify-center>
 				<v-flex xs12 sm8 md4>
 				<v-card class="elevation-12">
-					<v-toolbar color="#EEEEEE">
+					<v-toolbar color="#2ECCFA">
 					<v-toolbar-title >マイページ</v-toolbar-title>
 					<v-spacer>
 					</v-spacer>
 					</v-toolbar>
 					<v-card-text>
-					<v-form>
-						<p></p>
-						<p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
-						<p></p>
-						<v-btn flat color="black">取り扱い対象外アイテム</v-btn><br />
-						<v-btn flat color="black">利用規約</v-btn><br />
-						<v-btn flat color="black">プライバシーポリシー</v-btn><br />
-						<v-btn flat color="black">古物営業法に基づく表記</v-btn><br />
-						<v-btn flat color="black">運営会社</v-btn><br />
-						<v-btn @click="inquiryForm" flat color="black">お問い合わせ</v-btn><br />
-					</v-form>
+						<v-form>
+							<p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
+							<v-card-actions>
+								
+								<v-spacer></v-spacer>
+								<h4 class="headline mb-5">{{`08053195532(仮)${auth.phoneNumber}`}}</h4>
+								<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
+							</v-card-actions>
+							<v-btn flat color="black">取り扱い対象外アイテム</v-btn><br />
+							<v-btn flat color="black">利用規約</v-btn><br />
+							<v-btn flat color="black">プライバシーポリシー</v-btn><br />
+							<v-btn flat color="black">古物営業法に基づく表記</v-btn><br />
+							<v-btn flat color="black">運営会社</v-btn><br />
+							<v-btn @click="inquiryForm" flat color="black">お問い合わせ</v-btn><br />
+						</v-form>
 					</v-card-text>
-					<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
-					</v-card-actions>
+					<!-- <v-card-actions>
+						<v-spacer>
+						</v-spacer>
+						<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
+					</v-card-actions> -->
 				</v-card>
 				</v-flex>
 			</v-layout>
