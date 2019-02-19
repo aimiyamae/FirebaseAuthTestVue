@@ -13,9 +13,9 @@
 		<div class="text-xs-center">
 			<!-- golangニュースページに飛ぶ -->
 			<v-btn @click="hrefURL" outline color="indigo">NEWS</v-btn>
-			<!-- golang http から値を取ってくるボタンPublic -->
-			<v-btn @click="apiPublic" outline color="indigo">golangから値Public</v-btn>
+			<v-btn @click="reservationForm" outline color="indigo">予約フォーム</v-btn>
 			<v-btn @click="apiPrivate" outline color="indigo">private商品一覧</v-btn>
+			<v-btn @click="myPage" outline color="indigo">マイページ</v-btn>
 		</div>
 		<!-- <div v-show="state=='notLoggedIn'">
 			<button @click="loginWithEmail">ログインtest</button> -->
@@ -41,7 +41,7 @@
 								
 								<v-spacer></v-spacer>
 								<h4 class="headline mb-5">{{`08053195532(仮)${auth.phoneNumber}`}}</h4>
-								<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
+								<v-btn color="#EEEEEE" @click="transferAction">振込申請</v-btn>
 							</v-card-actions>
 							<v-btn flat color="black">取り扱い対象外アイテム</v-btn><br />
 							<v-btn flat color="black">利用規約</v-btn><br />
@@ -63,7 +63,7 @@
 		</v-content>
     </div>
 </template>
-		<div id="app">
+		<!-- <div id="app">
 			<h1>{{ msgCalendar }}</h1>
 			<v-app id="inspire">
 					<div>
@@ -78,9 +78,7 @@
 						></v-date-picker>
 					</div>
 			</v-app>
-		</div>
-
-
+		</div> -->
   	</div>
 </template>
 
@@ -92,15 +90,15 @@ export default {
 name: 'HelloWorld',
 data () {
 	return {
-		picker: new Date().toISOString().substr(0, 10),
+		// picker: new Date().toISOString().substr(0, 10),
 		msg: 'マイページ',
-		msgCalendar: '日付を選択',
+		// msgCalendar: '日付を選択',
 		name: firebase.auth().currentUser.uid,
+		phoneNumber: '',
 		auth: {
 			email: 'test@gmail.com',
 			phoneNumber: '',
 		},
-		phoneNumber: '',
 		recaptchaVerifier: null,
 		confirmationResult: null,
 		waitingVerify: false,
@@ -110,13 +108,10 @@ data () {
 },
 computed: {
     state() {
-		if (!this.auth.email) {
-			return 'notLoggedIn'
-		}
-		if (this.auth.email  && !this.waitingVerify && !this.auth.phoneNumber) {
+		if (!this.waitingVerify && !this.auth.phoneNumber) {
 			return 'onlyEmail'
 		}
-		if (this.auth.email && this.waitingVerify && !this.auth.phoneNumber) {
+		if (this.waitingVerify && !this.auth.phoneNumber) {
 			return 'waitingVerify'
 		}
 			return 'emailAndPhoneNumber'
@@ -145,16 +140,23 @@ computed: {
 				this.$router.push('/signin')
 			})
 		},
+		transferAction: function () {
+			open( "https://docs.google.com/forms/d/e/1FAIpQLSc4fFXAKvTWGaY2oE2gSxSMls9S7pxNePcxOMF6-9NRa5tbvQ/viewform", "_blank" ) ;
+		},
+		myPage: function () {
+			// window.location.href='http://localhost:8080/news'
+			this.$router.push('/')
+		},
 		hrefURL: function () {
-			window.location.href='http://localhost:8080/news'
+			// window.location.href='http://localhost:8080/news'
+			this.$router.push('/news')
 		},
 		inquiryForm: function () {
 			open( "https://docs.google.com/forms/d/1riQvax43mOky4luvP8K5AKPZNvYEJ3umOcHY_teXTWg/edit", "_blank" ) ;
 			// window.location.href='https://docs.google.com/forms/d/1riQvax43mOky4luvP8K5AKPZNvYEJ3umOcHY_teXTWg/edit'
 		},
-		apiPublic: async function () {
-			let res = await axios.get('http://localhost:8000/public')
-			this.msg = res.data
+		reservationForm: async function () {
+			open( "https://docs.google.com/forms/d/e/1FAIpQLSdO02JHSaXkqgsDo8gKJR0oaHDCZs5eWZbmc_1de2kf7g2tNA/viewform", "_blank" ) ;
 		},
 		apiPrivate: async function () {
 			let res = await axios.get('http://localhost:8000/private', {
