@@ -32,10 +32,11 @@
                         <v-flex xs12 md5>
                           <label>対象エリア・大阪府堺市</label>
                           <p></p>
-                          <div class="form-group mb-5">集荷日時
+                          <div class="form-group mb-5">
+                            集荷日時
                             <br>
                             <br>
-                            <label>{{ strDate }}</label>
+                            <label id="Selected">{{ strDate }}</label>
                             <br>
                             <label id="selectDate">{{ picker }}</label>
                             <!-- <v-text-field
@@ -47,20 +48,41 @@
                             <v-text-field
                               v-model="name"
                               :rules="nameRules"
-                              :counter="10"
+                              :counter="20"
                               label="氏名"
                               required
                             ></v-text-field>
+
                             <v-text-field
                               prepend-icon="dialpad"
-                              name="dialpad"
-                              v-model="email"
-                              :rules="nameRules"
-                              :counter="10"
+                              v-model="dial"
+                              :rules="dialRules"
+                              :counter="11"
                               label="電話番号"
                               type="number"
                               required
                             ></v-text-field>
+
+                            <v-text-field
+                              v-model="address"
+                              :rules="addressRules"
+                              label="住所"
+                              type="text"
+                              required
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="building"
+                              :rules="addressRules"
+                              label="建物名・部屋番号"
+                              type="text"
+                              required
+                            ></v-text-field>個数はプルダウン
+                            <label>電話番号は数字のみ入力してください</label>
+                            <div v-if="type === 'A'">A</div>
+                            <div v-else-if="type === 'B'">B</div>
+                            <div v-else-if="type === 'C'">C</div>
+                            <div v-else>Not A/B/C</div>
                           </div>
                         </v-flex>
                         <v-flex xs12 md1>
@@ -78,6 +100,20 @@
                               max="2020-03-20"
                               :day-format="date => new Date(date).getDate()"
                             ></v-date-picker>
+                            <v-card-title class="grey lighten-2" primary-title>以下に該当するアイテムは対象外となります。</v-card-title>
+                            <v-card-title class="grey lighten-2" primary-title>
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>以下に該当するアイテムは対象外となります。
+                              <br>
+                            </v-card-title>
                           </div>
                         </div>
                         <!-- <div class="form-group mb-5">
@@ -117,15 +153,30 @@ export default {
     return {
       valid: false,
       name: "",
+      dial: "",
+      address: "",
+      building: "",
       PickingDate: "",
       picker: "",
+      type: "A",
       msg: "集荷予約",
       strDate: "カレンダーを選択してください",
       nameRules: [
-        v => !!v || "Name is required"
-        // v => v.length <= 10 || "Name must be less than 10 characters"
-      ]
+        v => !!v || "Name is required",
+        v => v.length <= 20 || "20文字以内でお願いします。"
+      ],
+      dialRules: [
+        v => !!v || "dial is required",
+        v => v.length <= 11 || "電話番号をご確認ください"
+      ],
+      addressRules: [v => !!v || "dial is required"]
     };
+  },
+  watch: {
+    //日にちを取得した時
+    picker: function(val, oldVal) {
+      console.log("new: %s, old: %s", val, oldVal);
+    }
   },
   methods: {
     myPage: function() {
