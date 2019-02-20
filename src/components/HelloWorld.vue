@@ -11,7 +11,8 @@
     <h3>{{ name }}</h3>
     <div class="text-xs-center">
       <!-- golangニュースページに飛ぶ -->
-      <v-btn @click="hrefURL" outline color="indigo">NEWS</v-btn>
+      <v-btn @click="hrefCollection" outline color="indigo">テスト中予約form</v-btn>
+      <v-btn @click="hrefNEWS" outline color="indigo">NEWS</v-btn>
       <v-btn @click="reservationForm" outline color="indigo">予約フォーム</v-btn>
       <v-btn @click="apiPrivate" outline color="indigo">private商品一覧</v-btn>
       <v-btn @click="myPage" outline color="indigo">マイページ</v-btn>
@@ -20,58 +21,37 @@
     <!-- <div v-show="state=='notLoggedIn'">
     <button @click="loginWithEmail">ログインtest</button>-->
     <!-- </div> -->
-    <template>
-      <div class="signin">
-        <v-content>
-          <v-container fluid fill-height>
-            <v-layout align-center justify-center>
-              <v-flex xs12 sm8 md4>
-                <v-card class="elevation-12">
-                  <v-toolbar color="#2ECCFA">
-                    <v-toolbar-title>マイページ</v-toolbar-title>
-                    <v-spacer></v-spacer>
-                  </v-toolbar>
-                  <v-card-text>
-                    <v-form>
-                      <p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <h4 class="headline mb-5">{{`08053195532(仮)${auth.phoneNumber}`}}</h4>
-                        <v-btn color="#EEEEEE" @click="transferAction">振込申請</v-btn>
-                      </v-card-actions>
-                      <v-btn flat color="black">取り扱い対象外アイテム</v-btn>
-                      <br>
-                      <v-btn flat color="black">利用規約</v-btn>
-                      <br>
-                      <v-btn flat color="black">プライバシーポリシー</v-btn>
-                      <br>
-                      <v-btn flat color="black">古物営業法に基づく表記</v-btn>
-                      <br>
-                      <v-btn flat color="black">運営会社</v-btn>
-                      <br>
-                      <v-btn @click="inquiryForm" flat color="black">お問い合わせ</v-btn>
-                      <br>
-                      <div class="form-group mb-0">
-                        <label>日付選択</label>
-                        <input v-model="birthday" type="date" class="form-control">
-                      </div>
-                    </v-form>
-                  </v-card-text>
-                  <!-- <v-card-actions>
-						<v-spacer>
-						</v-spacer>
-						<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
-                  </v-card-actions>-->
-                </v-card>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-content>
-      </div>
-    </template>
-  </div>
-</template>
-		<!-- <div id="app">
+    <div class="signin">
+      <v-content>
+        <v-container fluid fill-height>
+          <v-layout align-center justify-center>
+            <v-flex xs12 sm8 md4>
+              <v-card class="elevation-12">
+                <v-toolbar color="#2ECCFA">
+                  <v-toolbar-title>マイページ</v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-card-text>
+                  <v-form>
+                    <p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <h4 class="headline mb-5">{{`08053195532(仮)${auth.phoneNumber}`}}</h4>
+                      <v-btn color="#EEEEEE" @click="transferAction">振込申請</v-btn>
+                    </v-card-actions>
+                    <v-btn flat color="black">取り扱い対象外アイテム</v-btn>
+                    <br>
+                    <v-btn flat color="black">利用規約</v-btn>
+                    <br>
+                    <v-btn flat color="black">プライバシーポリシー</v-btn>
+                    <br>
+                    <v-btn flat color="black">古物営業法に基づく表記</v-btn>
+                    <br>
+                    <v-btn flat color="black">運営会社</v-btn>
+                    <br>
+                    <v-btn @click="inquiryForm" flat color="black">お問い合わせ</v-btn>
+                    <br>
+                    <!-- <div id="app">
 			<h1>{{ msgCalendar }}</h1>
 			<v-app id="inspire">
 					<div>
@@ -86,9 +66,24 @@
 						></v-date-picker>
 					</div>
 			</v-app>
-		</div> -->
-  	</div>
+                    </div>-->
+                  </v-form>
+                </v-card-text>
+                <!-- <v-card-actions>
+						<v-spacer>
+						</v-spacer>
+						<v-btn color="#EEEEEE" @click="signIn">振込申請</v-btn>
+                </v-card-actions>-->
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
+    </div>
+  </div>
 </template>
+
+
 
 <script>
 import axios from "axios";
@@ -166,9 +161,13 @@ export default {
       // window.location.href='http://localhost:8080/news'
       this.$router.push("/");
     },
-    hrefURL: function() {
+    hrefNEWS: function() {
       // window.location.href='http://localhost:8080/news'
       this.$router.push("/news");
+    },
+    hrefCollection: function() {
+      // window.location.href='http://localhost:8080/news'
+      this.$router.push("/collectionForm");
     },
     inquiryForm: function() {
       open(

@@ -2,7 +2,7 @@
   <div class="hello">
     <div class="text-xs-center">
       <!-- golangニュースページに飛ぶ -->
-      <v-btn @click="hrefURL" outline color="indigo">NEWS</v-btn>
+      <v-btn @click="hrefNEWS" outline color="indigo">NEWS</v-btn>
       <!-- golang http から値を取ってくるボタンPublic -->
       <v-btn @click="reservationForm" outline color="indigo">予約フォーム</v-btn>
       <v-btn @click="apiPrivate" outline color="indigo">private商品一覧</v-btn>
@@ -66,7 +66,7 @@ export default {
       // window.location.href='http://localhost:8080/news'
       this.$router.push("/");
     },
-    hrefURL: function() {
+    hrefNEWS: function() {
       // window.location.href='http://localhost:8080/news'
       this.$router.push("/news");
     },

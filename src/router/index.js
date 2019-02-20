@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import News from '@/components/News'
+import CollectionForm from '@/components/CollectionForm'
 import Signup from '@/components/Signup'
 import Signin from '@/components/Signin'
 import firebase from 'firebase'
@@ -24,6 +25,11 @@ let router = new Router({
       path: '/news',
       name: 'News',
       component: News
+    },
+    {
+      path: '/collectionForm',
+      name: 'CollectionForm',
+      component: CollectionForm
     },
     {
       path: '/signup',
