@@ -12,15 +12,17 @@
               <v-card-text>
                 <h3>電話番号を入力</h3>
                 <input v-model="phoneNumber">
+                <div id="recaptch"></div>
                 <button id="linkPhoneNumberBtn" @click="sendSmsVerification">確認番号を送信</button>
                 <v-form>
                   <v-text-field
-                    prepend-icon="email"
-                    name="email"
+                    prepend-icon="dialpad"
+                    name="dial"
                     label="電話ラベル"
                     type="number"
-                    v-model="email"
+                    v-model="phoneNumber"
                   ></v-text-field>
+                  <div id="recaptch"></div>
                   <v-text-field
                     prepend-icon="email"
                     name="email"
@@ -112,13 +114,13 @@ export default {
           }
         }
       });
-
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "linkPhoneNumberBtn",
-      {
-        size: "invisible"
-      }
-    );
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptch");
+    // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    //   "linkPhoneNumberBtn",
+    //   {
+    //     size: "invisible"
+    //   }
+    // );
   },
   methods: {
     async sendSmsVerification() {
@@ -159,59 +161,59 @@ export default {
             alert(err.message);
           }
         );
-    },
-    authGoogle: function() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(
-          res => {
-            res.user.getIdToken().then(idToken => {
-              localStorage.setItem("jwt", idToken.toString());
-            });
-            this.$router.push("/");
-          },
-          err => {
-            alert(err.message);
-          }
-        );
-    },
-    authTwitter: function() {
-      const provider = new firebase.auth.TwitterAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(
-          res => {
-            res.user.getIdToken().then(idToken => {
-              localStorage.setItem("jwt", idToken.toString());
-            });
-            this.$router.push("/");
-          },
-          err => {
-            alert(err.message);
-          }
-        );
-    },
-
-    authFaceBook: function() {
-      const provider = new firebase.auth.FacebookAuthProvider();
-      firebase
-        .auth()
-        .signInWithPopup(provider)
-        .then(
-          res => {
-            res.user.getIdToken().then(idToken => {
-              localStorage.setItem("jwt", idToken.toString());
-            });
-            this.$router.push("/");
-          },
-          err => {
-            alert(err.message);
-          }
-        );
     }
+    // authGoogle: function() {
+    //   const provider = new firebase.auth.GoogleAuthProvider();
+    //   firebase
+    //     .auth()
+    //     .signInWithPopup(provider)
+    //     .then(
+    //       res => {
+    //         res.user.getIdToken().then(idToken => {
+    //           localStorage.setItem("jwt", idToken.toString());
+    //         });
+    //         this.$router.push("/");
+    //       },
+    //       err => {
+    //         alert(err.message);
+    //       }
+    //     );
+    // },
+    // authTwitter: function() {
+    //   const provider = new firebase.auth.TwitterAuthProvider();
+    //   firebase
+    //     .auth()
+    //     .signInWithPopup(provider)
+    //     .then(
+    //       res => {
+    //         res.user.getIdToken().then(idToken => {
+    //           localStorage.setItem("jwt", idToken.toString());
+    //         });
+    //         this.$router.push("/");
+    //       },
+    //       err => {
+    //         alert(err.message);
+    //       }
+    //     );
+    // },
+
+    // authFaceBook: function() {
+    //   const provider = new firebase.auth.FacebookAuthProvider();
+    //   firebase
+    //     .auth()
+    //     .signInWithPopup(provider)
+    //     .then(
+    //       res => {
+    //         res.user.getIdToken().then(idToken => {
+    //           localStorage.setItem("jwt", idToken.toString());
+    //         });
+    //         this.$router.push("/");
+    //       },
+    //       err => {
+    //         alert(err.message);
+    //       }
+    //     );
+    // }
   }
 };
 </script>
