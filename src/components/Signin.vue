@@ -10,6 +10,10 @@
                 <v-spacer></v-spacer>
               </v-toolbar>
               <v-card-text>
+                <div class="sign-in">
+                  <h1 class="title is-5">Sign in</h1>
+                  <div id="firebaseui-auth-container"></div>
+                </div>
                 <h3>電話番号を入力</h3>
                 <input v-model="phoneNumber">
                 <div id="recaptch"></div>
@@ -51,7 +55,7 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-btn @click="authGoogle" outline midium fab color="black">
+    <!-- <v-btn @click="authGoogle" outline midium fab color="black">
       <i class="fab fa-google fa-2x"></i>
     </v-btn>
     <v-btn @click="authFaceBook" outline midium fab color="black">
@@ -59,15 +63,17 @@
     </v-btn>
     <v-btn @click="authTwitter" outline midium fab color="black">
       <i class="fab fa-twitter-square fa-2x"></i>
-    </v-btn>
-    <p>You don't have an account?
+    </v-btn>-->
+    <!-- <p>You don't have an account?
       <router-link to="/signup">create account now!!</router-link>
-    </p>
+    </p>-->
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
+// import firebase from "@/plugins/firebase";
+import "firebaseui/dist/firebaseui.css";
 export default {
   name: "Signin",
   data: function() {
@@ -100,7 +106,45 @@ export default {
       return "emailAndPhoneNumber";
     }
   },
-  async mounted() {
+  mounted() {
+    var firebaseui = require("firebaseui");
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    ui.start("#firebaseui-auth-container", {
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+      callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+          // User successfully signed in.
+          // Return type determines whether we continue the redirect automatically
+          // or whether we leave that to developer to handle.
+          return true;
+        },
+        uiShown: function() {
+          // The widget is rendered.
+          // Hide the loader.
+          document.getElementById("loader").style.display = "none";
+        }
+      },
+      // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+      // signInFlow: 'popup',
+      signInSuccessUrl: "MyPage",
+      signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        {
+          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          requireDisplayName: false,
+          signInMethod:
+            firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+        },
+        {
+          provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          defaultCountry: "JP"
+        }
+      ],
+      // Terms of service url.
+      tosUrl: "<your-tos-url>",
+      // Privacy policy url.
+      privacyPolicyUrl: "<your-privacy-policy-url>"
+    });
     const _this = this;
     firebase
       .auth()
@@ -217,3 +261,12 @@ export default {
   }
 };
 </script>
+<style>
+.container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>

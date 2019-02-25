@@ -26,7 +26,7 @@
                   <p></p>
 
                   <!-- フォーム-->
-                  <v-form v-model="valid">
+                  <v-form v-model="valid" @submit.prevent="onsubmit">
                     <v-container>
                       <v-layout row>
                         <v-flex xs12 md5>
@@ -38,26 +38,37 @@
                             <br>
                             <label id="Selected" v-if="type === 'A'">{{ infoMsg }}</label>
                             <label id="selectDate" v-else-if="type === 'B'">
-                              {{ picker }}
+                              <v-text-field
+                                v-model="picker"
+                                label="集荷日"
+                                type="date"
+                                readonly
+                              >{{ picker }}</v-text-field>
                               <br>
                               {{ infoMsg }}
                             </label>
                             <label id="selectDate" v-else-if="type === 'C'">
-                              {{ picker }}
+                              <v-text-field
+                                v-model="picker"
+                                label="集荷日"
+                                type="date"
+                                readonly
+                              >{{ picker }}</v-text-field>
                               <br>
-                              {{ selectedTime }}
+                              <v-text-field
+                                v-model="selectedTime"
+                                label="時間指定"
+                                type="text"
+                                readonly
+                              >{{ selectedTime }}</v-text-field>
                             </label>
-                            <!-- <v-text-field
-                              v-model="carender"
-                              :rules="dateRules"
-                              label="カレンダーを選択してください(TODO.読みより専用にする)"
-                              required
-                            ></v-text-field>-->
+
                             <v-text-field
                               v-model="name"
                               :rules="nameRules"
                               :counter="20"
                               label="氏名"
+                              type="text"
                               required
                             ></v-text-field>
 
@@ -91,7 +102,7 @@
                               required
                             ></v-text-field>
                             <v-flex xs12 sm6 d-flex>
-                              <v-select :items="items" label="商品量の目安" solo></v-select>
+                              <v-select v-model="itemVolume" :items="items" label="商品量の目安" solo></v-select>
                             </v-flex>
                             <div v-if="type === 'A'"></div>
                             <div v-else-if="type === 'B'||type === 'C'">
@@ -110,91 +121,84 @@
                                     </v-card-title>
                                     <p></p>
                                     <v-btn
+                                      @click.native="timeAction01('10:00-11:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
                                       dark
-                                      value="10:00〜11:00"
-                                      v-model="selectedTime"
-                                    >10:00〜11:00</v-btn>
+                                      color="primary"
+                                    >10:00-11:00</v-btn>
                                     <v-btn
+                                      @click.native="timeAction01('11:00-12:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="11:00〜12:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >11:00〜12:00</v-btn>
+                                      color="primary"
+                                    >11:00-12:00</v-btn>
                                     <br>
                                     <v-btn
+                                      @click.native="timeAction01('12:00-13:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="12:00〜13:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >12:00〜13:00</v-btn>
+                                      color="primary"
+                                    >12:00-13:00</v-btn>
                                     <v-btn
+                                      @click.native="timeAction01('13:00-14:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="13:00〜14:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >13:00〜14:00</v-btn>
+                                      color="primary"
+                                    >13:00-14:00</v-btn>
                                     <br>
                                     <v-btn
+                                      @click.native="timeAction01('14:00-15:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="14:00〜15:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >14:00〜15:00</v-btn>
+                                      color="primary"
+                                    >14:00-15:00</v-btn>
                                     <v-btn
+                                      @click.native="timeAction01('15:00-16:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="15:00〜16:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >15:00〜16:00</v-btn>
+                                      color="primary"
+                                    >15:00-16:00</v-btn>
                                     <br>
                                     <v-btn
+                                      @click.native="timeAction01('16:00-17:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="16:00〜17:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >16:00〜17:00</v-btn>
+                                      color="primary"
+                                    >16:00-17:00</v-btn>
                                     <v-btn
+                                      @click.native="timeAction01('17:00-18:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="17:00〜18:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >17:00〜18:00</v-btn>
+                                      color="primary"
+                                    >17:00-18:00</v-btn>
                                     <br>
                                     <v-btn
+                                      @click.native="timeAction01('18:00-19:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="18:00〜19:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >18:00〜19:00</v-btn>
+                                      color="primary"
+                                    >18:00-19:00</v-btn>
                                     <v-btn
+                                      @click.native="timeAction01('19:00-20:00')"
                                       round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="19:00〜20:00"
-                                      v-model="selectedTime"
                                       dark
-                                    >19:00〜20:00</v-btn>
+                                      color="primary"
+                                    >19:00-20:00</v-btn>
                                     <br>
                                     <v-btn
+                                      @click.native="timeAction01('21:00-22:00')"
+                                      round
+                                      dark
+                                      color="primary"
+                                    >21:00-22:00</v-btn>
+                                    <v-btn
+                                      @click.native="timeAction01('22:00-23:00')"
+                                      round
+                                      dark
+                                      color="primary"
+                                    >22:00-23:00</v-btn>
+                                    <br>
+                                    <!-- <v-btn
                                       round
                                       color="primary"
                                       @click="timeAction01"
@@ -210,8 +214,7 @@
                                       v-model="selectedTime"
                                       dark
                                     >21:00〜22:00</v-btn>
-                                    <br>
-
+                                    <br>-->
                                     <v-divider></v-divider>
 
                                     <v-card-actions>
@@ -275,12 +278,15 @@
                         </div>-->
                       </v-layout>
                     </v-container>
+                    <div id="authorize-div">
+                      <v-btn @click="handleAuthClick(event)">Authorize</v-btn>
+                    </div>
                     <p>
                       <input type="submit" value="送信">
                     </p>
-                    <div class="text-xs-center">
+                    <!-- <div class="text-xs-center">
                       <v-btn round color="primary" dark>予約する</v-btn>
-                    </div>
+                    </div>-->
                   </v-form>
                 </v-card-text>
               </v-card>
@@ -293,11 +299,21 @@
 </template>
 
 <script>
-import axios from "axios";
-import firebase from "firebase";
+// window.addEventListener("load", function(event) {
+//   gapi.auth.authorize(
+//     { client_id: CLIENT_ID, scope: SCOPES, immediate: true },
+//     handleAuthResult
+//   );
+// });
+
 export default {
   data() {
     return {
+      CLIENT_ID:
+        "983825597797-la4s4qs7m20rjaj31u1pm3864ova90s9.apps.googleusercontent.com", //<クライアントIDを入力>
+      API_ID: "MIvxU5elHvx1WXXr9viB5u1GC74ZOrN7J", //<API IDを入力>
+      SCOPES: ["https://www.googleapis.com/auth/spreadsheets"],
+
       valid: false,
       name: "",
       dial: "",
@@ -307,6 +323,7 @@ export default {
       picker: "",
       selectedTime: "",
       dialog: "",
+      itemVolume: "",
       type: "A",
       msg: "集荷予約",
       infoMsg: "カレンダーを選択してください",
@@ -379,10 +396,70 @@ export default {
       );
       return today <= new Date(val) && new Date(val) <= maxAllowedDay;
     },
-    timeAction01: function($event) {
+    // timeAction01: function($event) {
+    //   this.type = "C";
+    //   this.selectedTime = $event.target.value;
+    //   console.log($event.target.value);
+    // }
+    timeAction01: function(timeString) {
       this.type = "C";
-      this.selectedTime = $event.target.value;
-      console.log($event.target.value);
+      this.selectedTime = timeString;
+      console.log(timeString);
+    },
+    onsubmit: function() {
+      // 本来はajax通信をする
+      console.log(this.valid);
+
+      if (this.valid) {
+        console.log(this.name);
+        console.log(this.itemVolume);
+      }
+    },
+    handleAuthResult: function(authResult) {
+      var authorizeDiv = document.getElementById("authorize-div");
+      if (authResult && !authResult.error) {
+        authorizeDiv.style.display = "none";
+        callMyFirstAPI();
+      } else {
+        authorizeDiv.style.display = "inline";
+      }
+    },
+    handleAuthClick: function(event) {
+      gapi.auth.authorize(
+        { client_id: CLIENT_ID, scope: SCOPES, immediate: false },
+        handleAuthResult
+      );
+      return false;
+    },
+
+    callMyFirstAPI: function() {
+      var request = {
+        function: "myFirstAPI",
+        parameters: ["foo"]
+      };
+
+      var op = gapi.client.request({
+        root: "https://script.googleapis.com",
+        path: "v1/scripts/" + API_ID + ":run",
+        method: "POST",
+        body: request
+      });
+
+      op.execute(function(resp) {
+        console.log(resp);
+        if (resp.error) {
+          appendPre("Error calling API:");
+          appendPre(JSON.stringify(resp, null, 2));
+        } else {
+          appendPre(JSON.stringify(resp.response.result, null, 2));
+        }
+      });
+    },
+
+    appendPre: function(message) {
+      var pre = document.getElementById("output");
+      var textContent = document.createTextNode(message + "\n");
+      pre.appendChild(textContent);
     }
   }
 };
