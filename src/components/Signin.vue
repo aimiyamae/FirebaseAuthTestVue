@@ -14,11 +14,11 @@
                   <h1 class="title is-5">Sign in</h1>
                   <div id="firebaseui-auth-container"></div>
                 </div>
-                <h3>電話番号を入力</h3>
+                <!-- <h3>電話番号を入力</h3>
                 <input v-model="phoneNumber">
                 <div id="recaptch"></div>
-                <button id="linkPhoneNumberBtn" @click="sendSmsVerification">確認番号を送信</button>
-                <v-form>
+                <button id="linkPhoneNumberBtn" @click="sendSmsVerification">確認番号を送信</button>-->
+                <!-- <v-form>
                   <v-text-field
                     prepend-icon="dialpad"
                     name="dial"
@@ -42,37 +42,24 @@
                     type="password"
                     v-model="password"
                   ></v-text-field>
-                </v-form>
+                </v-form>-->
               </v-card-text>
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="#EEEEEE" @click="signIn">Sign in</v-btn>
                 <v-btn id="linkPhoneNumberBtn" @click="sendSmsVerification">確認番号を送信</v-btn>
                 <v-btn @click="confirmVerification">確認</v-btn>
-              </v-card-actions>
+              </v-card-actions>-->
             </v-card>
           </v-flex>
         </v-layout>
       </v-container>
     </v-content>
-    <!-- <v-btn @click="authGoogle" outline midium fab color="black">
-      <i class="fab fa-google fa-2x"></i>
-    </v-btn>
-    <v-btn @click="authFaceBook" outline midium fab color="black">
-      <i class="fab fa-facebook fa-2x"></i>
-    </v-btn>
-    <v-btn @click="authTwitter" outline midium fab color="black">
-      <i class="fab fa-twitter-square fa-2x"></i>
-    </v-btn>-->
-    <!-- <p>You don't have an account?
-      <router-link to="/signup">create account now!!</router-link>
-    </p>-->
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
-// import firebase from "@/plugins/firebase";
 import "firebaseui/dist/firebaseui.css";
 export default {
   name: "Signin",
@@ -129,14 +116,16 @@ export default {
       signInSuccessUrl: "MyPage",
       signInOptions: [
         // Leave the lines as is for the providers you want to offer your users.
-        {
-          provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-          requireDisplayName: false,
-          signInMethod:
-            firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
-        },
+        // {メールフォーム
+        //   provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        //   requireDisplayName: false,
+        //   signInMethod:
+        //     firebase.auth.EmailAuthProvider.EMAIL_LINK_SIGN_IN_METHOD
+        // },
         {
           provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+          equireDisplayName: false,
+
           defaultCountry: "JP"
         }
       ],
@@ -168,7 +157,6 @@ export default {
   },
   methods: {
     async sendSmsVerification() {
-      console.log(this.phoneNumber);
       try {
         const confirmationResult = await firebase
           .auth()
@@ -177,6 +165,7 @@ export default {
         this.waitingVerify = true;
         console.log(this.this.confirmationResult);
       } catch (error) {
+        alert(err.message);
         // console.error(error)
       }
     },

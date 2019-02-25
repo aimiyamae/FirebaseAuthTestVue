@@ -36,7 +36,7 @@
                     <p>{{`登録ナンバー: ${auth.phoneNumber}`}}</p>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <h4 class="headline mb-5">{{`08053195532(仮)${auth.phoneNumber}`}}</h4>
+                      <h4 class="headline mb-5">{{`${auth.phoneNumber}`}}</h4>
                       <v-btn color="#EEEEEE" @click="transferAction">振込申請</v-btn>
                     </v-card-actions>
                     <v-btn flat color="black">取り扱い対象外アイテム</v-btn>
@@ -90,16 +90,17 @@ import axios from "axios";
 import firebase from "firebase";
 export default {
   name: "HelloWorld",
+  phoneNumber: "電話番号",
+  email: "",
   data() {
     return {
       // picker: new Date().toISOString().substr(0, 10),
       msg: "マイページ",
       // msgCalendar: '日付を選択',
       name: firebase.auth().currentUser.uid,
-      phoneNumber: "",
+      phoneNumber: "取得エラー",
       auth: {
-        email: "test@gmail.com",
-        phoneNumber: ""
+        phoneNumber: firebase.auth().currentUser.phoneNumber
       },
       recaptchaVerifier: null,
       confirmationResult: null,
@@ -107,17 +108,6 @@ export default {
       verificationCode: "",
       user: null
     };
-  },
-  computed: {
-    state() {
-      if (!this.waitingVerify && !this.auth.phoneNumber) {
-        return "onlyEmail";
-      }
-      if (this.waitingVerify && !this.auth.phoneNumber) {
-        return "waitingVerify";
-      }
-      return "emailAndPhoneNumber";
-    }
   },
   async mounted() {
     const _this = this;
