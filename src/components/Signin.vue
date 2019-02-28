@@ -12,6 +12,7 @@
               <v-card-text>
                 <div class="sign-in">
                   <h1 class="title is-5">Sign in</h1>
+                  <p></p>
                   <div id="firebaseui-auth-container"></div>
                 </div>
                 <!-- <h3>電話番号を入力</h3>

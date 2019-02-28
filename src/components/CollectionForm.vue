@@ -246,6 +246,27 @@
                             ></v-date-picker>
                           </div>
                           <br>
+                          <v-sheet height="500">
+                            <v-calendar :now="today" :value="today" color="primary">
+                              <v-layout slot="day" slot-scope="{ present, past, date }" fill-height>
+                                <template v-if="past && tracked[date]">
+                                  <v-sheet
+                                    v-for="(percent, i) in tracked[date]"
+                                    :key="i"
+                                    :title="category[i]"
+                                    :color="colors[i]"
+                                    :width="`${percent}%`"
+                                    height="100%"
+                                    tile
+                                  >
+                                    <!-- <p class="labelFont">○</p> -->
+
+                                  </v-sheet>
+                                </template>
+                              </v-layout>
+                            </v-calendar>
+                          </v-sheet>
+                          <br>
                           <v-card-title class="grey lighten-2" primary-title>以下に該当するアイテムは対象外となります。</v-card-title>
                           <v-card-text class="grey lighten-3">
                             <ul class="text-xs-left">
@@ -279,7 +300,7 @@
                       </v-layout>
                     </v-container>
                     <div id="authorize-div">
-                      <v-btn @click="handleAuthClick(event)">Authorize</v-btn>
+                      <v-btn @click.native="handleAuthResult($event)">Authorize</v-btn>
                     </div>
                     <p>
                       <input type="submit" value="送信">
@@ -299,21 +320,16 @@
 </template>
 
 <script>
-// window.addEventListener("load", function(event) {
-//   gapi.auth.authorize(
-//     { client_id: CLIENT_ID, scope: SCOPES, immediate: true },
-//     handleAuthResult
-//   );
-// });
-
+const CLIENT_ID =
+  "983825597797-bcsdlsf49tumbs6katfdhvdolv2o73pt.apps.googleusercontent.com";
+const SCRIPT_ID = "MIvxU5elHvx1WXXr9viB5u1GC74ZOrN7J";
+const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 export default {
+  head: () => ({
+    script: [{ src: "https://apis.google.com/js/client.js" }]
+  }),
   data() {
     return {
-      CLIENT_ID:
-        "983825597797-la4s4qs7m20rjaj31u1pm3864ova90s9.apps.googleusercontent.com", //<クライアントIDを入力>
-      API_ID: "MIvxU5elHvx1WXXr9viB5u1GC74ZOrN7J", //<API IDを入力>
-      SCOPES: ["https://www.googleapis.com/auth/spreadsheets"],
-
       valid: false,
       name: "",
       dial: "",
@@ -336,7 +352,22 @@ export default {
         v => v.length <= 11 || "電話番号をご確認ください"
       ],
       addressRules: [v => !!v || "address is required"],
-      items: ["1個〜50個", "50個〜100個", "150個〜200個", "200個以上"]
+      items: ["1個〜50個", "50個〜100個", "150個〜200個", "200個以上"],
+      //新カレンダー
+      today: "2019-01-10",
+      tracked: {
+        "2019-01-09": [0, 100],
+        "2019-01-08": [100, 0],
+        "2019-01-07": [0, 100],
+        "2019-01-06": [0, 100],
+        "2019-01-05": [100, 0],
+        "2019-01-04": [0, 100],
+        "2019-01-03": [0, 100],
+        "2019-01-02": [0, 100],
+        "2019-01-01": [0, 100]
+      },
+      colors: ["#FF0040", "#00FFFF"],
+      category: ["Development", "Slacking"]
     };
   },
   constructor() {
@@ -413,54 +444,54 @@ export default {
       if (this.valid) {
         console.log(this.name);
         console.log(this.itemVolume);
+        console.log(this.address);
       }
     },
-    handleAuthResult: function(authResult) {
-      var authorizeDiv = document.getElementById("authorize-div");
-      if (authResult && !authResult.error) {
-        authorizeDiv.style.display = "none";
-        callMyFirstAPI();
-      } else {
-        authorizeDiv.style.display = "inline";
-      }
-    },
-    handleAuthClick: function(event) {
-      gapi.auth.authorize(
-        { client_id: CLIENT_ID, scope: SCOPES, immediate: false },
-        handleAuthResult
-      );
-      return false;
-    },
+    handleAuthResult: $event => {
+      // ここで認証処理
+       console.log($event.target)
+      // 1. OAuth 認証
+      gapi.client
+        .init({
+          clientId: CLIENT_ID,
+          scope: SCOPES.join(" ")
+        })
+        .then(
+          async () => {
+            // 2. Google アカウント認証
+            if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+              await gapi.auth2.getAuthInstance().signIn();
+            }
 
-    callMyFirstAPI: function() {
-      var request = {
-        function: "myFirstAPI",
-        parameters: ["foo"]
-      };
+            // 3. Apps Script API の読み込み
+            await gapi.client.load(
+              "https://www.googleapis.com/discovery/v1/apis/script/v1/rest"
+            );
 
-      var op = gapi.client.request({
-        root: "https://script.googleapis.com",
-        path: "v1/scripts/" + API_ID + ":run",
-        method: "POST",
-        body: request
-      });
-
-      op.execute(function(resp) {
-        console.log(resp);
-        if (resp.error) {
-          appendPre("Error calling API:");
-          appendPre(JSON.stringify(resp, null, 2));
-        } else {
-          appendPre(JSON.stringify(resp.response.result, null, 2));
-        }
-      });
-    },
-
-    appendPre: function(message) {
-      var pre = document.getElementById("output");
-      var textContent = document.createTextNode(message + "\n");
-      pre.appendChild(textContent);
+            // 4. Apps Script API の実行
+            const result = await gapi.client.script.scripts
+              .run({
+                scriptId: SCRIPT_ID,
+                resource: {
+                  function: "CreateBooked",
+                  parameters: []
+                }
+              })
+              .catch(e => {
+                console.error(e);
+              });
+          },
+          e => {
+            console.error(e);
+          }
+        );
     }
   }
 };
 </script>
+<style>
+.labelFont {
+  font-size: 315%;
+  text-align: center;
+}
+</style>
