@@ -33,23 +33,15 @@
                           <label>対象エリア・大阪府堺市</label>
                           <p></p>
                           <div class="form-group mb-5">
-                            集荷日時
+                            <h2>集荷日時</h2>
                             <br>
                             <br>
-                            <label id="Selected" v-if="type === 'A'">{{ infoMsg }}</label>
-                            <label id="selectDate" v-else-if="type === 'B'">
+                            <label class="labelInfo" id="Selected" v-if="type === 'A'">{{ infoMsg }}</label>
+                            <label class="labelInfo" id="selectDate" v-else-if="type === 'B'">{{ infoMsg }}</label>
+                            <label class="labelInfo" id="selectDate" v-else-if="type === 'C'"></label>
                               <v-text-field
                                 v-model="picker"
-                                label="集荷日"
-                                type="date"
-                                readonly
-                              >{{ picker }}</v-text-field>
-                              <br>
-                              {{ infoMsg }}
-                            </label>
-                            <label id="selectDate" v-else-if="type === 'C'">
-                              <v-text-field
-                                v-model="picker"
+                                :rules="textRules"
                                 label="集荷日"
                                 type="date"
                                 readonly
@@ -57,59 +49,18 @@
                               <br>
                               <v-text-field
                                 v-model="selectedTime"
+                                :rules="textRules"
                                 label="時間指定"
                                 type="text"
                                 readonly
                               >{{ selectedTime }}</v-text-field>
-                            </label>
-
-                            <v-text-field
-                              v-model="name"
-                              :rules="nameRules"
-                              :counter="20"
-                              label="氏名"
-                              type="text"
-                              required
-                            ></v-text-field>
-
-                            <v-text-field
-                              prepend-icon="dialpad"
-                              v-model="dial"
-                              :rules="dialRules"
-                              :counter="11"
-                              label="電話番号"
-                              type="number"
-                              required
-                            ></v-text-field>
-                            <v-flex style="padding-left:0px; height:60px;" xs9>
-                              <span class="grey--text">＊電話番号は数字のみ入力してください</span>
-                            </v-flex>
-
-                            <label></label>
-                            <v-text-field
-                              v-model="address"
-                              :rules="addressRules"
-                              label="住所"
-                              type="text"
-                              required
-                            ></v-text-field>
-
-                            <v-text-field
-                              v-model="building"
-                              :rules="addressRules"
-                              label="建物名・部屋番号"
-                              type="text"
-                              required
-                            ></v-text-field>
-                            <v-flex xs12 sm6 d-flex>
-                              <v-select v-model="itemVolume" :items="items" label="商品量の目安" solo></v-select>
-                            </v-flex>
+                                                        <!-- モーダル条件式 -->
                             <div v-if="type === 'A'"></div>
                             <div v-else-if="type === 'B'||type === 'C'">
                               <!-- モーダル内容 -->
                               <div class="text-xs-center">
                                 <v-dialog v-model="dialog" width="500">
-                                  <v-btn slot="activator" color="red lighten-2" dark>時間を表示するアクション</v-btn>
+                                  <v-btn slot="activator" color="red lighten-2" dark>時間を変更できるボタン</v-btn>
 
                                   <v-card>
                                     <v-card-title
@@ -206,14 +157,6 @@
                                       v-model="selectedTime"
                                       dark
                                     >20:00〜21:00</v-btn>
-                                    <v-btn
-                                      round
-                                      color="primary"
-                                      @click="timeAction01"
-                                      value="21:00〜22:00"
-                                      v-model="selectedTime"
-                                      dark
-                                    >21:00〜22:00</v-btn>
                                     <br>-->
                                     <v-divider></v-divider>
 
@@ -227,6 +170,47 @@
                               <!-- モーダル内容 -->
                             </div>
                             <div v-else>日付の取得ができませんでした</div>
+                            <!-- モーダル条件式 -->
+                            <v-text-field
+                              v-model="name"
+                              :rules="nameRules"
+                              :counter="20"
+                              label="氏名"
+                              type="text"
+                              required></v-text-field>
+
+                            <v-text-field
+                              prepend-icon="dialpad"
+                              v-model="dial"
+                              :rules="dialRules"
+                              :counter="11"
+                              label="電話番号"
+                              type="number"
+                              required></v-text-field>
+                            <v-flex style="padding-left:0px; height:60px;" xs9>
+                              <span class="grey--text">＊電話番号は数字のみ入力してください</span>
+                            </v-flex>
+
+                            <label></label>
+                            <v-text-field
+                              v-model="address"
+                              :rules="textRules"
+                              label="住所"
+                              type="text"
+                              required
+                            ></v-text-field>
+
+                            <v-text-field
+                              v-model="building"
+                              :rules="textRules"
+                              label="建物名・部屋番号"
+                              type="text"
+                              required
+                            ></v-text-field>
+                            <v-flex xs12 sm6 d-flex>
+                              <v-select v-model="itemVolume" :items="items" label="商品量の目安" solo></v-select>
+                            </v-flex>
+
                           </div>
                         </v-flex>
                         <v-flex xs12 md1>
@@ -338,7 +322,8 @@ export default {
       PickingDate: "",
       picker: "",
       selectedTime: "",
-      dialog: "",
+      //dialog: "",にすると日付の後モーダルでない
+      dialog: true,
       itemVolume: "",
       type: "A",
       msg: "集荷予約",
@@ -348,10 +333,10 @@ export default {
         v => v.length <= 20 || "20文字以内でお願いします。"
       ],
       dialRules: [
-        v => !!v || "dial is required",
+        v => !!v || "Dial is required",
         v => v.length <= 11 || "電話番号をご確認ください"
       ],
-      addressRules: [v => !!v || "address is required"],
+      textRules: [v => !!v || "Text is required"],
       items: ["1個〜50個", "50個〜100個", "150個〜200個", "200個以上"],
       //新カレンダー
       today: "2019-01-10",
@@ -379,6 +364,8 @@ export default {
       (this.type = "B"),
         (this.infoMsg = "時間を指定してください"),
         console.log("new: %s, old: %s", val, oldVal);
+
+        
     },
     selectedTime: function(val, oldVal) {
       console.log("new: %s, old: %s", val, oldVal);
@@ -493,5 +480,10 @@ export default {
 .labelFont {
   font-size: 315%;
   text-align: center;
+}
+.labelInfo{
+  font-size: 110%;
+  font-weight:bolder;
+  color:red;
 }
 </style>

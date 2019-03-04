@@ -124,12 +124,12 @@ export default {
         }
       });
 
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-      "linkPhoneNumberBtn",
-      {
-        size: "invisible"
-      }
-    );
+    // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+    //   "linkPhoneNumberBtn",
+    //   {
+    //     size: "invisible"
+    //   }
+    // );
   },
   methods: {
     signOut: function() {

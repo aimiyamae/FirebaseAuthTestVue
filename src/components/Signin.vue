@@ -12,8 +12,10 @@
               <v-card-text>
                 <div class="sign-in">
                   <h1 class="title is-5">Sign in</h1>
-                  <p></p>
-                  <div id="firebaseui-auth-container"></div>
+
+                  <div id="firebaseui-auth-container">
+                    <p id="loader"></p>
+                  </div>
                 </div>
                 <!-- <h3>電話番号を入力</h3>
                 <input v-model="phoneNumber">
@@ -148,7 +150,7 @@ export default {
           }
         }
       });
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptch");
+    // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptch");
     // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
     //   "linkPhoneNumberBtn",
     //   {
@@ -252,11 +254,11 @@ export default {
 };
 </script>
 <style>
-.container {
+/* .container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-}
+} */
 </style>
