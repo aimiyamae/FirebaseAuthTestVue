@@ -63,7 +63,8 @@
 
 <script>
 import firebase from "firebase";
-import "firebaseui/dist/firebaseui.css";
+// import "firebaseui/dist/firebaseui.css";
+import "firebaseui-ja/dist/firebaseui.css";
 export default {
   name: "Signin",
   data: function() {
@@ -97,7 +98,9 @@ export default {
     }
   },
   mounted() {
-    var firebaseui = require("firebaseui");
+    // var firebaseui = require("firebaseui");
+    var firebaseui = require("firebaseui-ja");
+    require("firebaseui-ja/dist/firebaseui.css");
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start("#firebaseui-auth-container", {
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
