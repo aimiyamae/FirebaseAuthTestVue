@@ -37,24 +37,28 @@
                             <br>
                             <br>
                             <label class="labelInfo" id="Selected" v-if="type === 'A'">{{ infoMsg }}</label>
-                            <label class="labelInfo" id="selectDate" v-else-if="type === 'B'">{{ infoMsg }}</label>
+                            <label
+                              class="labelInfo"
+                              id="selectDate"
+                              v-else-if="type === 'B'"
+                            >{{ infoMsg }}</label>
                             <label class="labelInfo" id="selectDate" v-else-if="type === 'C'"></label>
-                              <v-text-field
-                                v-model="picker"
-                                :rules="textRules"
-                                label="集荷日"
-                                type="date"
-                                readonly
-                              >{{ picker }}</v-text-field>
-                              <br>
-                              <v-text-field
-                                v-model="selectedTime"
-                                :rules="textRules"
-                                label="時間指定"
-                                type="text"
-                                readonly
-                              >{{ selectedTime }}</v-text-field>
-                                                        <!-- モーダル条件式 -->
+                            <v-text-field
+                              v-model="picker"
+                              :rules="textRules"
+                              label="集荷日"
+                              type="date"
+                              readonly
+                            >{{ picker }}</v-text-field>
+                            <br>
+                            <v-text-field
+                              v-model="selectedTime"
+                              :rules="textRules"
+                              label="時間指定"
+                              type="text"
+                              readonly
+                            >{{ selectedTime }}</v-text-field>
+                            <!-- モーダル条件式 -->
                             <div v-if="type === 'A'"></div>
                             <div v-else-if="type === 'B'||type === 'C'">
                               <!-- モーダル内容 -->
@@ -177,7 +181,8 @@
                               :counter="20"
                               label="氏名"
                               type="text"
-                              required></v-text-field>
+                              required
+                            ></v-text-field>
 
                             <v-text-field
                               prepend-icon="dialpad"
@@ -186,7 +191,8 @@
                               :counter="11"
                               label="電話番号"
                               type="number"
-                              required></v-text-field>
+                              required
+                            ></v-text-field>
                             <v-flex style="padding-left:0px; height:60px;" xs9>
                               <span class="grey--text">＊電話番号は数字のみ入力してください</span>
                             </v-flex>
@@ -210,7 +216,6 @@
                             <v-flex xs12 sm6 d-flex>
                               <v-select v-model="itemVolume" :items="items" label="商品量の目安" solo></v-select>
                             </v-flex>
-
                           </div>
                         </v-flex>
                         <v-flex xs12 md1>
@@ -244,7 +249,6 @@
                                     tile
                                   >
                                     <!-- <p class="labelFont">○</p> -->
-
                                   </v-sheet>
                                 </template>
                               </v-layout>
@@ -364,8 +368,6 @@ export default {
       (this.type = "B"),
         (this.infoMsg = "時間を指定してください"),
         console.log("new: %s, old: %s", val, oldVal);
-
-        
     },
     selectedTime: function(val, oldVal) {
       console.log("new: %s, old: %s", val, oldVal);
@@ -436,7 +438,7 @@ export default {
     },
     handleAuthResult: $event => {
       // ここで認証処理
-       console.log($event.target)
+      console.log($event.target);
       // 1. OAuth 認証
       gapi.client
         .init({
@@ -481,9 +483,9 @@ export default {
   font-size: 315%;
   text-align: center;
 }
-.labelInfo{
+.labelInfo {
   font-size: 110%;
-  font-weight:bolder;
-  color:red;
+  font-weight: bolder;
+  color: red;
 }
 </style>
