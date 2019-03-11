@@ -455,6 +455,12 @@ export default {
             // 3. Apps Script API の読み込み
             await gapi.client.load(
               "https://www.googleapis.com/discovery/v1/apis/script/v1/rest"
+                .then(function(result) {
+                  console.log(result);
+                })
+                .thenCatch(function(error) {
+                  console.log(error);
+                })
             );
 
             // 4. Apps Script API の実行
